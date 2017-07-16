@@ -1,3 +1,83 @@
-<h1>
-  {{title}}
-</h1>
+	<nav class="navbar navbar-transparent navbar-fixed-top navbar-color-on-scroll">
+	<div class="container">
+        <div class="navbar-header">
+	    	<a href="https://github.com/wubw/outlier">
+	        	<div class="logo-container">
+	                <div class="logo">
+	                    <img src="assets/img/logo.png" alt="Outlier" rel="tooltip" title="<b>Outlier</b> was Designed & Coded with care by <b>Binwei</b>" data-placement="bottom" data-html="true">
+	                </div>
+	                <div class="brand">
+	                    Become Outlier!
+	                </div>
+				</div>
+	      	</a>
+	    </div>
+
+	    <div class="collapse navbar-collapse" id="navigation-index">
+	    	<ul class="nav navbar-nav navbar-right">
+				<li>
+					<a routerLink="/time" target="_blank">
+						<i class="material-icons">alarm_on</i> Time
+					</a>
+				</li>
+				<li>
+					<a routerLink="/goal" target="_blank">
+						<i class="material-icons">assessment</i> Goal
+					</a>
+				</li>
+				<li>
+					<a routerLink="/knowledge" target="_blank">
+						<i class="material-icons">library_books</i> Knowledge
+					</a>
+				</li>
+				<li>
+					<a routerLink="/network" target="_blank">
+						<i class="material-icons">group</i> Network
+					</a>
+				</li>
+	    	</ul>
+	    </div>
+	</div>
+</nav>
+<!-- End Navbar -->
+
+<div class="wrapper">
+	<div class="header header-filter" style="background-image: url('assets/img/bg.jpg');">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-8 col-md-offset-2">
+					<div class="brand">
+            <router-outlet></router-outlet>			
+					</div>
+				</div>
+			</div>
+
+		</div>
+  </div>
+  <footer class="footer">
+	    <div class="container">
+	        <nav class="pull-left">
+	            <ul>
+					<li>
+						<a href="https://wubw.github.io/">
+						   About Us
+						</a>
+					</li>
+          <li>
+            <a rel="tooltip" title="Like us on Facebook" data-placement="bottom" href="https://www.facebook.com/binwei.wu.56" target="_blank" class="btn btn-white btn-simple btn-just-icon">
+              <i class="fa fa-facebook-square"></i>
+            </a>
+          </li>
+          <li>
+            <a rel="tooltip" title="Follow us on Linkedin" data-placement="bottom" href="https://www.linkedin.com/in/binweiwu/" target="_blank" class="btn btn-white btn-simple btn-just-icon">
+              <i class="fa fa-linkedin"></i>
+            </a>
+          </li>
+	            </ul>
+	        </nav>
+	        <div class="copyright pull-right">
+	            &copy; 2017, made with <i class="material-icons">favorite</i> by Binwei for a better web.
+	        </div>
+	    </div>
+	</footer>
+</div>
