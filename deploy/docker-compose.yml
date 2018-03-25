@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  outlier-app:
+    image: outlier-app
+    build:
+      context: ../backend/outlier.api
+      dockerfile: Dockerfile
+    ports:
+      - "81:80"
+  
