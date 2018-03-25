@@ -44,6 +44,9 @@ namespace outlier.api
             // Shows UseCors with CorsPolicyBuilder.
             app.UseCors(builder => builder.WithOrigins("http://localhost:4200"));
 
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
