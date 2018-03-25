@@ -1,0 +1,9 @@
+.vs/
+obj/
+Debug/
+Release/
+node_modules/
+**/geoDb/data/
+*.log
+wwwroot/
+.DS_Store

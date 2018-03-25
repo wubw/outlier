@@ -395,3 +395,6 @@
 .tutorial-page .title{
     color: #FFFFFF;
 }
+html {
+    overflow: hidden;
+}
