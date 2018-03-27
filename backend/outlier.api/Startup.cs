@@ -41,8 +41,10 @@ namespace outlier.api
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
             });
 
+#if DEBUG
             // Shows UseCors with CorsPolicyBuilder.
             app.UseCors(builder => builder.WithOrigins("http://localhost:4200"));
+#endif
 
             app.UseDefaultFiles();
             app.UseStaticFiles();

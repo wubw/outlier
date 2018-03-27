@@ -39,7 +39,19 @@ namespace outlier.api.Controllers
         [HttpGet("description")]
         public string Description()
         {
-            return "Manage Time";
+            return "Hours don't lie";
+        }
+
+        [HttpGet("category")]
+        public IEnumerable<string> Category()
+        {
+            return new[] { "Reading", "Programming", "Excercise", "Meeting" };
+        }
+
+        [HttpGet("tag")]
+        public IEnumerable<string> Tag()
+        {
+            return new[] { "Machine Learning", "3D Graphics", "Security", "Software Architecture" };
         }
     }
 }

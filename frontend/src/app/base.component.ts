@@ -3,14 +3,12 @@ import { Http } from '@angular/http';
 import { environment } from '../environments/environment';
 import 'rxjs/add/operator/toPromise';
 
-@Component({  
-    templateUrl: './base.component.html'
-})
+@Component({})
 export abstract class BaseComponent {
     private description: string;
     protected abstract topic: string;
     
-    constructor(private http: Http) {
+    constructor(protected http: Http) {
     }
 
     protected retrieveDescription() {

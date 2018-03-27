@@ -1,1 +1,40 @@
-<h1>{{description}}</h1>
+<h1 class="txt-white">{{description}}</h1>
+<div>
+    <div class="col-md-4">
+        <h5 class="txt-gray">Time (hour):</h5>
+        <select>
+            <option>0.5</option>
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+        </select>
+        <h5 class="txt-gray">Category:</h5>
+        <select>
+            <option *ngFor="let c of categories">
+                {{c}}
+            </option>
+        </select>
+        <h5 class="txt-gray">Tags:</h5>
+        <select>
+            <option *ngFor="let t of tags">
+                {{t}}
+            </option>
+        </select>
+        <br><br>
+        <button>Register Time</button>
+        <br><br><br><br>
+        <h5 class="txt-gray">Category:</h5>
+        <input>
+        <button>+</button>
+        <button>-</button>
+        <br><br>
+        <h5 class="txt-gray">Tag:</h5>
+        <input>
+        <button>+</button>
+        <button>-</button>
+    </div>
+    <div class="col-md-8">
+        <h3 class="txt-gray">Dashboard</h3>
+    </div>
+</div>
