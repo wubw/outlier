@@ -25,8 +25,8 @@
         <button>Register Time</button>
         <br><br><br><br>
         <h5 class="txt-gray">Category:</h5>
-        <input>
-        <button>+</button>
+        <input [(ngModel)]="inputcategory" name="inputcategory" required >
+        <button (click)="addCategory()" [disabled]="!inputcategory">+</button>
         <button>-</button>
         <br><br>
         <h5 class="txt-gray">Tag:</h5>

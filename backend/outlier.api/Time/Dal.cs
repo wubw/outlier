@@ -1,0 +1,145 @@
+﻿namespace outlier.api.Time
+{
+    using System;
+    using System.Linq;
+    using System.Net;
+    using System.Threading.Tasks;
+
+    using Microsoft.Azure.Documents;
+    using Microsoft.Azure.Documents.Client;
+
+    public class Dal
+    {
+        private const string EndpointUri = "https://localhost:8081";
+        private const string PrimaryKey = "C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==";
+        private readonly DocumentClient docDbClient;
+
+        const string DbName = "Outlier";
+        const string CollCategory = "Categories";
+        const string CollTag = "Tags";
+        const string CollTimeLogs = "TimeLogs";
+
+        public Dal()
+        {
+            this.docDbClient = new DocumentClient(new Uri(EndpointUri), PrimaryKey);
+            this.Initialize().Wait();
+        }
+
+        private async Task Initialize()
+        {
+            await this.docDbClient.CreateDatabaseIfNotExistsAsync(new Database { Id = DbName });
+
+            await this.docDbClient.CreateDocumentCollectionIfNotExistsAsync(
+                UriFactory.CreateDatabaseUri(DbName), 
+                new DocumentCollection { Id = CollCategory });
+
+            await this.docDbClient.CreateDocumentCollectionIfNotExistsAsync(
+                UriFactory.CreateDatabaseUri(DbName),
+                new DocumentCollection { Id = CollTag });
+
+            var colltimelogs = new DocumentCollection { Id = CollTimeLogs };
+            colltimelogs.PartitionKey.Paths.Add("/UserId");
+            await this.docDbClient.CreateDocumentCollectionIfNotExistsAsync(
+                UriFactory.CreateDatabaseUri(DbName), colltimelogs);
+        }
+
+        public async Task CreateCategoryDocumentIfNotExists(Category category)
+        {
+            try
+            {
+                await this.docDbClient.ReadDocumentAsync(
+                    UriFactory.CreateDocumentUri(DbName, CollCategory, category.UserId));
+            }
+            catch (DocumentClientException de)
+            {
+                if (de.StatusCode == HttpStatusCode.NotFound)
+                {
+                    await this.docDbClient.CreateDocumentAsync(
+                        UriFactory.CreateDocumentCollectionUri(DbName, CollCategory), category);
+                }
+                else
+                {
+                    throw;
+                }
+            }
+        }
+
+        public async Task CreateTagDocumentIfNotExists(Tag tag)
+        {
+            try
+            {
+                await this.docDbClient.ReadDocumentAsync(
+                    UriFactory.CreateDocumentUri(DbName, CollTag, tag.UserId));
+            }
+            catch (DocumentClientException de)
+            {
+                if (de.StatusCode == HttpStatusCode.NotFound)
+                {
+                    await this.docDbClient.CreateDocumentAsync(
+                        UriFactory.CreateDocumentCollectionUri(DbName, CollTag), tag);
+                }
+                else
+                {
+                    throw;
+                }
+            }
+        }
+
+        public async Task CreateTimeLogDocumentIfNotExists(TimeLog timelog)
+        {
+            try
+            {
+                await this.docDbClient.ReadDocumentAsync(
+                    UriFactory.CreateDocumentUri(DbName, CollTimeLogs, timelog.UserId),
+                    new RequestOptions { PartitionKey = new PartitionKey(timelog.UserId) });
+            }
+            catch (DocumentClientException de)
+            {
+                if (de.StatusCode == HttpStatusCode.NotFound)
+                {
+                    await this.docDbClient.CreateDocumentAsync(
+                        UriFactory.CreateDocumentCollectionUri(DbName, CollTimeLogs), timelog);
+                }
+                else
+                {
+                    throw;
+                }
+            }
+        }
+
+        public async Task<Category> GetCategories(string userId)
+        {
+            Document result = await this.docDbClient.ReadDocumentAsync(
+                                  UriFactory.CreateDocumentUri(DbName, CollCategory, userId));
+            var category = (Category)(dynamic)result;
+            return category;
+        }
+
+        public async Task AddCategory(string userId, string newCategory)
+        {
+            Document result = await this.docDbClient.ReadDocumentAsync(
+                                  UriFactory.CreateDocumentUri(DbName, CollCategory, userId));
+            var category = (Category)(dynamic)result;
+            var list = category.Categories.ToList();
+            list.Add(newCategory);
+            category.Categories = list.ToArray();
+
+            await this.docDbClient.ReplaceDocumentAsync(
+                UriFactory.CreateDocumentUri(DbName, CollCategory, userId),
+                category);
+        }
+
+        public async Task<Tag> GetTags(string userId)
+        {
+            Document result = await this.docDbClient.ReadDocumentAsync(
+                                  UriFactory.CreateDocumentUri(DbName, CollTag, userId));
+            var tag = (Tag)(dynamic)result;
+            return tag;
+        }
+
+        public async Task DropDatabase()
+        {
+            await this.docDbClient.DeleteDatabaseAsync(UriFactory.CreateDatabaseUri(DbName));
+        }
+    }
+}

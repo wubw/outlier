@@ -6,6 +6,8 @@ using Swashbuckle.AspNetCore.Swagger;
 
 namespace outlier.api
 {
+    using System;
+
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -43,7 +45,13 @@ namespace outlier.api
 
 #if DEBUG
             // Shows UseCors with CorsPolicyBuilder.
-            app.UseCors(builder => builder.WithOrigins("http://localhost:4200"));
+            app.UseCors(builder => 
+                builder.WithOrigins("http://localhost:4200")
+                    .AllowAnyMethod()
+                    .WithExposedHeaders("content-disposition")
+                    .AllowAnyHeader()
+                    .AllowCredentials()
+                    .SetPreflightMaxAge(TimeSpan.FromSeconds(3600)));
 #endif
 
             app.UseDefaultFiles();

@@ -1,14 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-
-namespace outlier.api.Controllers
+﻿namespace outlier.api.Time
 {
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+
+    using Microsoft.AspNetCore.Mvc;
+
+    using outlier.api.User;
+
     [Route("api/[controller]")]
     public class TimeController : Controller
     {
+        private readonly Dal dal = new Dal();
+
         [HttpGet]
         public IEnumerable<string> Get()
         {
@@ -43,15 +46,23 @@ namespace outlier.api.Controllers
         }
 
         [HttpGet("category")]
-        public IEnumerable<string> Category()
+        public async Task<IEnumerable<string>> Category()
         {
-            return new[] { "Reading", "Programming", "Excercise", "Meeting" };
+            var result = await this.dal.GetCategories(OutlierUser.CurrentId);
+            return result.Categories;
+        }
+
+        [HttpPost("category")]
+        public async Task Category([FromBody]string value)
+        {
+            await this.dal.AddCategory(OutlierUser.CurrentId, value);
         }
 
         [HttpGet("tag")]
-        public IEnumerable<string> Tag()
+        public async Task<IEnumerable<string>> Tag()
         {
-            return new[] { "Machine Learning", "3D Graphics", "Security", "Software Architecture" };
+            var result = await this.dal.GetTags(OutlierUser.CurrentId);
+            return result.Tags;
         }
     }
 }
