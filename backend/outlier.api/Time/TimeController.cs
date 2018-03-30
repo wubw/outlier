@@ -58,11 +58,29 @@
             await this.dal.AddCategory(OutlierUser.CurrentId, value);
         }
 
+        [HttpDelete("category/{id}")]
+        public async Task Category(int id)
+        {
+            await this.dal.DeleteCategory(OutlierUser.CurrentId, id);
+        }
+
         [HttpGet("tag")]
         public async Task<IEnumerable<string>> Tag()
         {
             var result = await this.dal.GetTags(OutlierUser.CurrentId);
             return result.Tags;
+        }
+
+        [HttpPost("tag")]
+        public async Task Tag([FromBody]string value)
+        {
+            await this.dal.AddTag(OutlierUser.CurrentId, value);
+        }
+
+        [HttpDelete("tag/{id}")]
+        public async Task Tag(int id)
+        {
+            await this.dal.DeleteTag(OutlierUser.CurrentId, id);
         }
     }
 }

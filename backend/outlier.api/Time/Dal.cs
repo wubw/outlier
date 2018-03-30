@@ -129,12 +129,54 @@
                 category);
         }
 
+        public async Task DeleteCategory(string userId, int id)
+        {
+            Document result = await this.docDbClient.ReadDocumentAsync(
+                UriFactory.CreateDocumentUri(DbName, CollCategory, userId));
+            var category = (Category)(dynamic)result;
+            var list = category.Categories.ToList();
+            list.RemoveAt(id);
+            category.Categories = list.ToArray();
+
+            await this.docDbClient.ReplaceDocumentAsync(
+                UriFactory.CreateDocumentUri(DbName, CollCategory, userId),
+                category);
+        }
+
         public async Task<Tag> GetTags(string userId)
         {
             Document result = await this.docDbClient.ReadDocumentAsync(
                                   UriFactory.CreateDocumentUri(DbName, CollTag, userId));
             var tag = (Tag)(dynamic)result;
             return tag;
+        }
+
+        public async Task AddTag(string userId, string newTag)
+        {
+            Document result = await this.docDbClient.ReadDocumentAsync(
+                UriFactory.CreateDocumentUri(DbName, CollTag, userId));
+            var tag = (Tag)(dynamic)result;
+            var list = tag.Tags.ToList();
+            list.Add(newTag);
+            tag.Tags = list.ToArray();
+
+            await this.docDbClient.ReplaceDocumentAsync(
+                UriFactory.CreateDocumentUri(DbName, CollTag, userId),
+                tag);
+        }
+
+        public async Task DeleteTag(string userId, int id)
+        {
+            Document result = await this.docDbClient.ReadDocumentAsync(
+                UriFactory.CreateDocumentUri(DbName, CollTag, userId));
+            var tag = (Tag)(dynamic)result;
+            var list = tag.Tags.ToList();
+            list.RemoveAt(id);
+            tag.Tags = list.ToArray();
+
+            await this.docDbClient.ReplaceDocumentAsync(
+                UriFactory.CreateDocumentUri(DbName, CollTag, userId),
+                tag);
         }
 
         public async Task DropDatabase()

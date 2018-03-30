@@ -1,0 +1,20 @@
+Time
+    - Charts
+    - Deploy DocumentDB
+    - More unit tests
+    - Repository
+    - Event sourcing
+    - CQRS
+    - Better UI, with floating categories/tags, drag & drop, styles
+    - Better validaton includes server side
+    - Better UI feedback
+
+Knowledge
+Network
+Goal
+Common
+    - API management
+    - Docker cluster
+    - Security
+    - Authenticaiton
+    - Authorization
