@@ -9,6 +9,7 @@ import { TimeComponent } from './time.component';
 import { GoalComponent } from './goal.component';
 import { KnowledgeComponent } from './knowledge.component';
 import { NetworkComponent } from './network.component';
+import { UserService } from './user.service';
 
 const appRoutes: Routes = [
   { path: '', component: TimeComponent },
@@ -35,7 +36,7 @@ const appRoutes: Routes = [
       { enableTracing: true }
     )
   ],
-  providers: [],
+  providers: [UserService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

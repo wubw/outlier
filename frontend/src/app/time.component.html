@@ -1,40 +1,52 @@
 <h1 class="txt-white">{{description}}</h1>
 <div>
     <div class="col-md-4">
-        <h5 class="txt-gray">Time (hour):</h5>
-        <select>
+        <div class="txt-gray">Time (hour):</div>
+        <select [(ngModel)]="hourspent">
             <option>0.5</option>
             <option>1</option>
             <option>2</option>
             <option>3</option>
             <option>4</option>
         </select>
-        <h5 class="txt-gray">Category:</h5>
-        <select>
+        <br>
+        <div class="txt-gray">Category:</div>
+        <select [(ngModel)]="selectedcategory">
             <option *ngFor="let c of categories">
                 {{c}}
             </option>
         </select>
-        <h5 class="txt-gray">Tags:</h5>
-        <select>
+        <br>
+        <div class="txt-gray">Tags:</div>
+        <select [(ngModel)]="selectedtag">
             <option *ngFor="let t of tags">
                 {{t}}
             </option>
         </select>
         <br><br>
-        <button>Register Time</button>
-        <br><br><br><br>
-        <h5 class="txt-gray">Category:</h5>
+        <button (click)="addTimelog()" [disabled]="!selectedcategory || !selectedtag">Register Time</button>
+        <br><br>
+        <div class="txt-gray">Category:</div>
         <input [(ngModel)]="inputcategory">
         <button (click)="addCategory()" [disabled]="!inputcategory">+</button>
         <button (click)="deleteCategory()" [disabled]="!inputcategory">-</button>
         <br><br>
-        <h5 class="txt-gray">Tag:</h5>
+        <div class="txt-gray">Tag:</div>
         <input [(ngModel)]="inputtag">
         <button (click)="addTag()" [disabled]="!inputtag">+</button>
         <button (click)="deleteTag()" [disabled]="!inputtag">-</button>
+        <br><br><br><br>
+        <h5 class="txt-gray">{{statusinfo}}</h5>
     </div>
     <div class="col-md-8">
-        <h3 class="txt-gray">Dashboard</h3>
+        <div>
+            <button (click)="renderchartCategoryDist()">Category dist</button>
+            <button (click)="renderchartTagDist()">Tag dist</button>
+            <!-- <button>Timelog history</button> -->
+        </div>
+        <br>
+        <div #chartTarget>
+            chart target
+        </div>
     </div>
 </div>

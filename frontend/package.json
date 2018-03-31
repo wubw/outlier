@@ -23,13 +23,15 @@
     "@angular/router": "^4.0.0",
     "ajv": "^6.0.0",
     "core-js": "^2.4.1",
+    "highcharts": "^6.0.7",
+    "mdn-polyfills": "^3.5.0",
     "rxjs": "^5.1.0",
-    "zone.js": "^0.8.4",
-    "mdn-polyfills": "^3.5.0"
+    "zone.js": "^0.8.4"
   },
   "devDependencies": {
     "@angular/cli": "1.6.2",
     "@angular/compiler-cli": "^4.0.0",
+    "@types/highcharts": "^5.0.20",
     "@types/jasmine": "2.5.38",
     "@types/node": "~6.0.60",
     "codelyzer": "~2.0.0",
@@ -38,9 +40,9 @@
     "karma": "~1.4.1",
     "karma-chrome-launcher": "~2.0.0",
     "karma-cli": "~1.0.1",
+    "karma-coverage-istanbul-reporter": "^0.2.0",
     "karma-jasmine": "~1.1.0",
     "karma-jasmine-html-reporter": "^0.2.2",
-    "karma-coverage-istanbul-reporter": "^0.2.0",
     "protractor": "~5.1.0",
     "ts-node": "~2.0.0",
     "tslint": "~4.5.0",

@@ -1,6 +1,7 @@
 ﻿namespace outlier.api.Time
 {
     using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
 
     using Microsoft.AspNetCore.Mvc;
@@ -13,20 +14,23 @@
         private readonly Dal dal = new Dal();
 
         [HttpGet]
-        public IEnumerable<string> Get()
+        public IEnumerable<TimeLog> Get()
         {
-            return new string[] { "value1", "value2" };
+            var result = this.dal.GetTimeLogs(OutlierUser.CurrentId);
+            return result;
         }
 
         [HttpGet("{id}")]
-        public string Get(int id)
+        public TimeLog Get(int id)
         {
-            return "value";
+            var result = this.dal.GetTimeLogs(OutlierUser.CurrentId);
+            return result.ToList()[id];
         }
 
         [HttpPost]
-        public void Post([FromBody]string value)
+        public async Task Post([FromBody]TimeLog value)
         {
+            await this.dal.CreateTimeLogDocument(value);
         }
 
         [HttpPut("{id}")]

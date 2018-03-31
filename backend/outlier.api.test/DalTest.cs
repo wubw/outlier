@@ -51,7 +51,7 @@ namespace outlier.api.test
                                    Category = "Reading",
                                    Tags = new[] { "Software Architecture" }
                                };
-            dal.CreateTimeLogDocumentIfNotExists(timelog1).Wait();
+            dal.CreateTimeLogDocument(timelog1).Wait();
 
             var timelog2 = new TimeLog
                                {
@@ -61,7 +61,7 @@ namespace outlier.api.test
                                    Category = "Programming",
                                    Tags = new[] { "Security" }
                                };
-            dal.CreateTimeLogDocumentIfNotExists(timelog2).Wait();
+            dal.CreateTimeLogDocument(timelog2).Wait();
 
             var timelog3 = new TimeLog
                                {
@@ -71,7 +71,7 @@ namespace outlier.api.test
                                    Category = "Drinking",
                                    Tags = new[] { "Beer", "Wine" }
                                };
-            dal.CreateTimeLogDocumentIfNotExists(timelog3).Wait();
+            dal.CreateTimeLogDocument(timelog3).Wait();
         }
 
         [TestMethod]

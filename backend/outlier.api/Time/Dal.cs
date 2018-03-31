@@ -1,6 +1,7 @@
 ﻿namespace outlier.api.Time
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Net;
     using System.Threading.Tasks;
@@ -85,26 +86,29 @@
             }
         }
 
-        public async Task CreateTimeLogDocumentIfNotExists(TimeLog timelog)
+        public async Task CreateTimeLogDocument(TimeLog timelog)
         {
-            try
-            {
-                await this.docDbClient.ReadDocumentAsync(
-                    UriFactory.CreateDocumentUri(DbName, CollTimeLogs, timelog.UserId),
-                    new RequestOptions { PartitionKey = new PartitionKey(timelog.UserId) });
-            }
-            catch (DocumentClientException de)
-            {
-                if (de.StatusCode == HttpStatusCode.NotFound)
-                {
-                    await this.docDbClient.CreateDocumentAsync(
-                        UriFactory.CreateDocumentCollectionUri(DbName, CollTimeLogs), timelog);
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            await this.docDbClient.CreateDocumentAsync(
+                UriFactory.CreateDocumentCollectionUri(DbName, CollTimeLogs), 
+                timelog);
+        }
+
+        public IEnumerable<TimeLog> GetTimeLogs()
+        {
+            var queryOptions = new FeedOptions { MaxItemCount = -1 };
+            var timelogquery = this.docDbClient.CreateDocumentQuery<TimeLog>(
+                UriFactory.CreateDocumentCollectionUri(DbName, CollTimeLogs),
+                queryOptions);
+            return timelogquery;
+        }
+
+        public IEnumerable<TimeLog> GetTimeLogs(string userId)
+        {
+            var queryOptions = new FeedOptions { MaxItemCount = -1, PartitionKey = new PartitionKey(userId) };
+            var timelogquery = this.docDbClient.CreateDocumentQuery<TimeLog>(
+                UriFactory.CreateDocumentCollectionUri(DbName, CollTimeLogs),
+                queryOptions);
+            return timelogquery;
         }
 
         public async Task<Category> GetCategories(string userId)
