@@ -32,46 +32,27 @@ namespace outlier.api.test
             var tag1 = new Tag
                            {
                                UserId = "wubw",
-                               Tags = new[]
-                                          {
-                                              "Machine Learning", "3D Graphics", "Security",
-                                              "Software Architecture"
-                                          }
+                               Tags = new[] { "Machine Learning", "3D Graphics", "Security", "Software Architecture" }
                            };
             dal.CreateTagDocumentIfNotExists(tag1).Wait();
 
             var tag2 = new Tag { UserId = "test", Tags = new[] { "Wine", "Beer" } };
             dal.CreateTagDocumentIfNotExists(tag2).Wait();
 
-            var timelog1 = new TimeLog
-                               {
-                                   UserId = "wubw",
-                                   StartTime = DateTime.Now,
-                                   HourSpent = 0.5,
-                                   Category = "Reading",
-                                   Tags = new[] { "Software Architecture" }
-                               };
+            var timelog1 = new TimeLog { UserId = "wubw", StartTime = DateTime.Now, HourSpent = 0.5, Category = "Reading", Tags = new[] { "Software Architecture" } };
             dal.CreateTimeLogDocument(timelog1).Wait();
 
-            var timelog2 = new TimeLog
-                               {
-                                   UserId = "wubw",
-                                   StartTime = DateTime.Now,
-                                   HourSpent = 1,
-                                   Category = "Programming",
-                                   Tags = new[] { "Security" }
-                               };
+            var timelog2 = new TimeLog { UserId = "wubw", StartTime = DateTime.Now, HourSpent = 1, Category = "Programming", Tags = new[] { "Security" } };
             dal.CreateTimeLogDocument(timelog2).Wait();
 
-            var timelog3 = new TimeLog
-                               {
-                                   UserId = "test",
-                                   StartTime = DateTime.Now,
-                                   HourSpent = 1,
-                                   Category = "Drinking",
-                                   Tags = new[] { "Beer", "Wine" }
-                               };
+            var timelog3 = new TimeLog { UserId = "test", StartTime = DateTime.Now, HourSpent = 1, Category = "Drinking", Tags = new[] { "Beer", "Wine" } };
             dal.CreateTimeLogDocument(timelog3).Wait();
+
+            var timelog4 = new TimeLog { UserId = "wubw", StartTime = DateTime.Now, HourSpent = 1, Category = "Meeting", Tags = new[] { "3D Graphics" } };
+            dal.CreateTimeLogDocument(timelog4).Wait();
+
+            var timelog5 = new TimeLog { UserId = "wubw", StartTime = DateTime.Now, HourSpent = 2, Category = "Excercise", Tags = new[] { "Machine Learning" } };
+            dal.CreateTimeLogDocument(timelog5).Wait();
         }
 
         [TestMethod]

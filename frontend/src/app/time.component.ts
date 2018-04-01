@@ -4,7 +4,7 @@ import { Http, RequestOptionsArgs, Headers } from '@angular/http';
 import { BaseComponent } from './base.component';
 import { environment } from '../environments/environment';
 import { TimeLog } from './timelog';
-import { UserService } from './user.service';
+import { AuthService } from './auth.service';
 
 import { chart } from 'highcharts';
 import * as Highcharts from 'highcharts';
@@ -30,7 +30,7 @@ export class TimeComponent extends BaseComponent implements AfterViewInit {
 
   private chart: Highcharts.ChartObject;
 
-  constructor(http: Http, private userservice: UserService) {
+  constructor(http: Http, private userservice: AuthService) {
     super(http);
     this.retrieveDescription();
     this.retrieveCategory();

@@ -35,6 +35,13 @@
 						<i class="material-icons">group</i> Network
 					</a>
 				</li>
+				<li>
+					<a>{{username}}</a>
+				</li>
+				<li>
+					<a routerLink="/" (click)="signin()" target="_self" *ngIf="!isOnline()">Log-in</a>
+					<a routerLink="/" (click)="signout()" target="_self" *ngIf="isOnline()">Log-out</a>
+				</li>
 	    	</ul>
 	    </div>
 	</div>
