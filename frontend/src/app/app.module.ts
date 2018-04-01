@@ -11,6 +11,8 @@ import { KnowledgeComponent } from './knowledge.component';
 import { NetworkComponent } from './network.component';
 import { AuthService } from './auth.service';
 
+import { JwtHelper } from 'angular2-jwt';
+
 const appRoutes: Routes = [
   { path: '', component: TimeComponent },
   { path: 'time', component: TimeComponent },
@@ -36,7 +38,7 @@ const appRoutes: Routes = [
       { enableTracing: true }
     )
   ],
-  providers: [AuthService],
+  providers: [AuthService, JwtHelper],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

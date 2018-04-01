@@ -22,12 +22,13 @@
     "@angular/platform-browser-dynamic": "^4.0.0",
     "@angular/router": "^4.0.0",
     "ajv": "^6.0.0",
+    "angular2-jwt": "^0.2.3",
     "core-js": "^2.4.1",
     "highcharts": "^6.0.7",
     "mdn-polyfills": "^3.5.0",
+    "msal": "0.1.1",
     "rxjs": "^5.1.0",
-    "zone.js": "^0.8.4",
-    "msal": "0.1.1"
+    "zone.js": "^0.8.4"
   },
   "devDependencies": {
     "@angular/cli": "1.6.2",
