@@ -30,8 +30,8 @@ export class TimeComponent extends BaseComponent implements AfterViewInit {
 
   private chart: Highcharts.ChartObject;
 
-  constructor(http: Http, private userservice: AuthService) {
-    super(http);
+  constructor(http: Http, authservice: AuthService) {
+    super(http, authservice);
     this.retrieveDescription();
     this.retrieveCategory();
     this.retrieveTag();
@@ -42,7 +42,7 @@ export class TimeComponent extends BaseComponent implements AfterViewInit {
   }
 
   private retrieveCategory() {
-    this.http.get(environment.apiUrl + this.topic + '/category')
+    this.http.get(environment.apiUrl + this.topic + '/category',  { headers: this.getHttpHeaders() })
       .toPromise()
       .then(response => response.text())
       .then(data => {
@@ -55,7 +55,7 @@ export class TimeComponent extends BaseComponent implements AfterViewInit {
   }
 
   private retrieveTag() {
-    this.http.get(environment.apiUrl + this.topic + '/tag')
+    this.http.get(environment.apiUrl + this.topic + '/tag', { headers: this.getHttpHeaders() })
       .toPromise()
       .then(response => response.text())
       .then(data => {
@@ -68,21 +68,17 @@ export class TimeComponent extends BaseComponent implements AfterViewInit {
   }
 
   private addTimelog() {
-    const headers = new Headers();
-    headers.append('Content-Type', 'application/json-patch+json');
-    headers.append('Accept', 'application/json');
-
     let timelog = new TimeLog();
     timelog.Category = this.selectedcategory;
     timelog.HourSpent = this.hourspent;
     timelog.Tags = [ this.selectedtag ];
-    timelog.UserId = this.userservice.userid;
+    timelog.UserId = this.authservice.userid;
     timelog.StartTime = new Date();
     console.log(timelog);
     let payload = JSON.stringify(timelog);
     console.log(payload);
     this.http.post(environment.apiUrl + this.topic, 
-      payload, { headers: headers })
+      payload, { headers: this.getHttpHeaders() })
       .subscribe(() => {
         this.statusinfo = 'New time log has been registered.';
       }, err => console.log(err));
@@ -94,12 +90,8 @@ export class TimeComponent extends BaseComponent implements AfterViewInit {
       return;
     }
 
-    const headers = new Headers();
-    headers.append('Content-Type', 'application/json-patch+json');
-    headers.append('Accept', 'application/json');
-
     this.http.post(environment.apiUrl + this.topic + '/category',
-      JSON.stringify(this.inputcategory), { headers: headers })
+      JSON.stringify(this.inputcategory), { headers: this.getHttpHeaders() })
       .subscribe(() => {
           this.retrieveCategory();
           this.statusinfo = 'New category ' + this.inputcategory + ' has been created.';
@@ -114,7 +106,7 @@ export class TimeComponent extends BaseComponent implements AfterViewInit {
       return;
     }
 
-    this.http.delete(environment.apiUrl + this.topic + '/category/' + id)
+    this.http.delete(environment.apiUrl + this.topic + '/category/' + id, { headers: this.getHttpHeaders()})
       .toPromise()
       .then(() => {
         this.retrieveCategory();
@@ -133,12 +125,8 @@ export class TimeComponent extends BaseComponent implements AfterViewInit {
       return;
     }
 
-    const headers = new Headers();
-    headers.append('Content-Type', 'application/json-patch+json');
-    headers.append('Accept', 'application/json');
-
     this.http.post(environment.apiUrl + this.topic + '/tag',
-      JSON.stringify(this.inputtag), { headers: headers })
+      JSON.stringify(this.inputtag), { headers: this.getHttpHeaders() })
       .subscribe(() => {
           this.retrieveTag();
           alert('New tag ' + this.inputtag + ' has been created.');
@@ -153,7 +141,7 @@ export class TimeComponent extends BaseComponent implements AfterViewInit {
       return;
     }
 
-    this.http.delete(environment.apiUrl + this.topic + '/tag/' + id)
+    this.http.delete(environment.apiUrl + this.topic + '/tag/' + id, { headers: this.getHttpHeaders() })
       .toPromise()
       .then(() => {
         this.retrieveTag();
@@ -188,7 +176,7 @@ export class TimeComponent extends BaseComponent implements AfterViewInit {
     };
     this.chart = chart(this.chartTarget.nativeElement, options);
     let series = { name:'Categories', colorByPoint: true, data: []}
-    this.http.get(environment.apiUrl + this.topic)
+    this.http.get(environment.apiUrl + this.topic, { headers: this.getHttpHeaders() })
       .toPromise()
       .then(response => response.text())
       .then(data => {
@@ -232,7 +220,7 @@ export class TimeComponent extends BaseComponent implements AfterViewInit {
     };
     this.chart = chart(this.chartTarget.nativeElement, options);
     let series = { name:'Tags', colorByPoint: true, data: []}
-    this.http.get(environment.apiUrl + this.topic)
+    this.http.get(environment.apiUrl + this.topic, { headers: this.getHttpHeaders() })
       .toPromise()
       .then(response => response.text())
       .then(data => {

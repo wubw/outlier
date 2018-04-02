@@ -4,11 +4,13 @@
     using System.Linq;
     using System.Threading.Tasks;
 
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
     using outlier.api.User;
 
     [Route("api/[controller]")]
+    [Authorize]
     public class TimeController : Controller
     {
         private readonly Dal dal = new Dal();

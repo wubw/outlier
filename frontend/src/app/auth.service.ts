@@ -6,8 +6,6 @@ declare var Msal: any;
 
 @Injectable()
 export class AuthService {
-    access_token: string;
-
     private tenantConfig = {
         tenant: 'azureadb2ctestwubw.onmicrosoft.com',
         clientID: '29c0ac9e-7745-4262-9dd6-6e621e6f3c8c',
@@ -18,47 +16,71 @@ export class AuthService {
     // Configure the authority for Azure AD B2C
     private authority = 'https://login.microsoftonline.com/tfp/' + this.tenantConfig.tenant + '/' + this.tenantConfig.signUpSignInPolicy;
 
-    public userid = 'wubw';
+    public get userid() {
+        return 'wubw';
+    } 
+
+    get access_token(): string {
+        return sessionStorage.getItem('access_token');
+    }
+
+    set access_token(value: string) {
+        sessionStorage.setItem('access_token', value);
+    }
 
     /*
      * B2C SignIn SignUp Policy Configuration
      */
-    private clientApplication = new Msal.UserAgentApplication(
-        this.tenantConfig.clientID, this.authority,
-        (errorDesc, token, error, tokenType) => { // Called after loginRedirect or acquireTokenPopup
+    private clientApplicationImpl;
+    private get clientApplication() {
+        if (!this.clientApplicationImpl) {
+            this.clientApplicationImpl = new Msal.UserAgentApplication(
+                this.tenantConfig.clientID, this.authority,
+                (errorDesc, token, error, tokenType) => { // Called after loginRedirect or acquireTokenPopup
+                }
+            );
         }
-    );
+        return this.clientApplicationImpl;
+    } 
+
 
     constructor(private jwtHelper: JwtHelper) {
     }
 
-    public login(): void {
-        const _this = this;
+    public login() {
+        let promise = new Promise((resolve, reject) => {
         this.clientApplication.loginPopup(this.tenantConfig.b2cScopes)
             .then(idToken => {
-                _this.clientApplication.acquireTokenSilent(_this.tenantConfig.b2cScopes)
+                this.clientApplication.acquireTokenSilent(this.tenantConfig.b2cScopes)
                     .then(accessToken => {
                         console.log('acquireTokenSilent');
-                        _this.access_token = accessToken;
+                        this.access_token = accessToken;
+                        resolve();
                         },
                         error => {
-                        _this.clientApplication.acquireTokenPopup(_this.tenantConfig.b2cScopes)
+                            this.clientApplication.acquireTokenPopup(this.tenantConfig.b2cScopes)
                             .then(accessToken => {
                                 console.log('acquireTokenPopup');
-                                _this.access_token = accessToken;
+                                this.access_token = accessToken;
+                                resolve();
                             },
                             err => {
                                 bootbox.alert('Error acquiring the popup:\n' + err);
+                                reject();
                             });
                         });
             },
             error => {
                 bootbox.alert('Error during login:\n' + error);
+                reject();
             });
+        });
+        return promise;
     }
 
-    logout(): void {
+    logout() {
         this.clientApplication.logout();
+        this.clientApplicationImpl = null;
     };
 
     isOnline(): boolean {

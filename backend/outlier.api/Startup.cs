@@ -1,15 +1,22 @@
-﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Swashbuckle.AspNetCore.Swagger;
-
-namespace outlier.api
+﻿namespace outlier.api
 {
     using System;
+    using System.Text;
+    using System.Threading.Tasks;
+
+    using Microsoft.AspNetCore.Authentication.JwtBearer;
+    using Microsoft.AspNetCore.Builder;
+    using Microsoft.AspNetCore.Hosting;
+    using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.DependencyInjection;
+
+    using Swashbuckle.AspNetCore.Swagger;
 
     public class Startup
     {
+        public static string ScopeRead;
+        public static string ScopeWrite;
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -20,6 +27,20 @@ namespace outlier.api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAuthentication(options =>
+                    {
+                        options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                    })
+                .AddJwtBearer(jwtOptions =>
+                    {
+                        jwtOptions.Authority = $"https://login.microsoftonline.com/tfp/{Configuration["AzureAdB2C:Tenant"]}/{Configuration["AzureAdB2C:Policy"]}/v2.0/";
+                        jwtOptions.Audience = Configuration["AzureAdB2C:ClientId"];
+                        jwtOptions.Events = new JwtBearerEvents
+                                                {
+                                                    OnAuthenticationFailed = AuthenticationFailed
+                                                };
+                    });
+
             services.AddMvc();
             services.AddCors();
 
@@ -62,7 +83,20 @@ namespace outlier.api
                 app.UseDeveloperExceptionPage();
             }
 
+            ScopeRead = Configuration["AzureAdB2C:ScopeRead"];
+            ScopeWrite = Configuration["AzureAdB2C:ScopeWrite"];
+            app.UseAuthentication();
+
             app.UseMvc();
+        }
+
+        private Task AuthenticationFailed(AuthenticationFailedContext arg)
+        {
+            // For debugging purposes only!
+            var s = $"AuthenticationFailed: {arg.Exception.Message}";
+            arg.Response.ContentLength = s.Length;
+            arg.Response.Body.Write(Encoding.UTF8.GetBytes(s), 0, s.Length);
+            return Task.FromResult(0);
         }
     }
 }

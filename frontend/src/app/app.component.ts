@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { AuthService } from './auth.service';
 
 @Component({
@@ -9,12 +10,12 @@ import { AuthService } from './auth.service';
 export class AppComponent {
   title = 'app works!';
 
-  constructor(private msalService: AuthService) {
+  constructor(private msalService: AuthService, private router: Router) {
 
   }
 
   private signin() {
-    this.msalService.login();
+    this.msalService.login().then(() => this.router.navigate(['']));
   }
 
   private signout() {

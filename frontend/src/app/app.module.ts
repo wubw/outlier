@@ -5,20 +5,23 @@ import { HttpModule } from '@angular/http';
 import { RouterModule, Routes } from '@angular/router';
 
 import { AppComponent } from './app.component';
+import { LoginComponent } from './login.component';
 import { TimeComponent } from './time.component';
 import { GoalComponent } from './goal.component';
 import { KnowledgeComponent } from './knowledge.component';
 import { NetworkComponent } from './network.component';
 import { AuthService } from './auth.service';
+import { AuthGuardService } from './auth-guard.service';
 
 import { JwtHelper } from 'angular2-jwt';
 
 const appRoutes: Routes = [
-  { path: '', component: TimeComponent },
-  { path: 'time', component: TimeComponent },
-  { path: 'goal', component: GoalComponent },
-  { path: 'knowledge', component: KnowledgeComponent },
-  { path: 'network', component: NetworkComponent }
+  { path: '', component: TimeComponent, canActivate: [AuthGuardService]  },
+  { path: 'time', component: TimeComponent, canActivate: [AuthGuardService] },
+  { path: 'goal', component: GoalComponent, canActivate: [AuthGuardService] },
+  { path: 'knowledge', component: KnowledgeComponent, canActivate: [AuthGuardService] },
+  { path: 'network', component: NetworkComponent, canActivate: [AuthGuardService] },
+  { path: 'login', component: LoginComponent }
 ];
 
 @NgModule({
@@ -27,12 +30,14 @@ const appRoutes: Routes = [
     TimeComponent,
     GoalComponent,
     KnowledgeComponent,
-    NetworkComponent
+    NetworkComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpModule,
+    AuthGuardService,
     RouterModule.forRoot(
       appRoutes,
       { enableTracing: true }
