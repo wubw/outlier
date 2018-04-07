@@ -5,5 +5,10 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost:63017/api/'
+  apiUrl: 'http://localhost:63017/api/',
+
+  authTenant: 'azureadb2ctestwubw.onmicrosoft.com',
+  authClientId: '29c0ac9e-7745-4262-9dd6-6e621e6f3c8c',
+  authSignUpSignInPolicy: 'B2C_1_SiUpIn',
+  authB2cScopeRead: 'https://azureadb2ctestwubw.onmicrosoft.com/outlier/demo.read'
 };

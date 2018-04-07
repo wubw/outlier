@@ -6,6 +6,7 @@
 
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.Extensions.Configuration;
 
     using outlier.api.User;
 
@@ -13,7 +14,12 @@
     [Authorize]
     public class TimeController : Controller
     {
-        private readonly Dal dal = new Dal();
+        private readonly Dal dal;
+
+        public TimeController(IConfiguration configuration)
+        {
+            this.dal = new Dal(configuration["TimeDB:EntryPointUrl"], configuration["TimeDB:PrimaryKey"]);
+        }
 
         [HttpGet]
         public IEnumerable<TimeLog> Get()

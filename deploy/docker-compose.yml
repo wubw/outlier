@@ -1,11 +1,20 @@
 version: '3'
 
 services:
-  outlier-app:
-    image: outlier-app
+  outlier-frontend:
+    image: outlier-frontend
+    build:
+      context: ../frontend
+      dockerfile: Dockerfile
+    ports:
+      - "81:80"
+  outlier-backend:
+    image: outlier-backend
     build:
       context: ../backend/outlier.api
       dockerfile: Dockerfile
     ports:
-      - "81:80"
+      - "82:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Test
   

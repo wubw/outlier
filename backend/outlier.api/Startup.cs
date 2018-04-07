@@ -19,7 +19,7 @@
 
         public Startup(IConfiguration configuration)
         {
-            Configuration = configuration;
+            this.Configuration = configuration;
         }
 
         public IConfiguration Configuration { get; }
@@ -34,7 +34,7 @@
                 .AddJwtBearer(jwtOptions =>
                     {
                         jwtOptions.Authority = $"https://login.microsoftonline.com/tfp/{Configuration["AzureAdB2C:Tenant"]}/{Configuration["AzureAdB2C:Policy"]}/v2.0/";
-                        jwtOptions.Audience = Configuration["AzureAdB2C:ClientId"];
+                        jwtOptions.Audience = this.Configuration["AzureAdB2C:ClientId"];
                         jwtOptions.Events = new JwtBearerEvents
                                                 {
                                                     OnAuthenticationFailed = AuthenticationFailed
@@ -64,27 +64,27 @@
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
             });
 
-#if DEBUG
+            var frontendUrl = this.Configuration["Frontend:Url"];
+
             // Shows UseCors with CorsPolicyBuilder.
             app.UseCors(builder => 
-                builder.WithOrigins("http://localhost:4200")
+                builder.WithOrigins(frontendUrl)
                     .AllowAnyMethod()
                     .WithExposedHeaders("content-disposition")
                     .AllowAnyHeader()
                     .AllowCredentials()
                     .SetPreflightMaxAge(TimeSpan.FromSeconds(3600)));
-#endif
 
             app.UseDefaultFiles();
-            app.UseStaticFiles();
+            //app.UseStaticFiles();
 
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
 
-            ScopeRead = Configuration["AzureAdB2C:ScopeRead"];
-            ScopeWrite = Configuration["AzureAdB2C:ScopeWrite"];
+            ScopeRead = this.Configuration["AzureAdB2C:ScopeRead"];
+            ScopeWrite = this.Configuration["AzureAdB2C:ScopeWrite"];
             app.UseAuthentication();
 
             app.UseMvc();

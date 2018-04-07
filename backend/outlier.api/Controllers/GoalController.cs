@@ -1,14 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+
 using Microsoft.AspNetCore.Mvc;
 
 namespace outlier.api.Controllers
 {
+    using Microsoft.Extensions.Configuration;
+
     [Route("api/[controller]")]
     public class GoalController : Controller
     {
+        private IConfiguration configuration;
+
+        public GoalController(IConfiguration configuration)
+        {
+            this.configuration = configuration;
+        }
+
         [HttpGet]
         public IEnumerable<string> Get()
         {
@@ -18,7 +25,7 @@ namespace outlier.api.Controllers
         [HttpGet("{id}")]
         public string Get(int id)
         {
-            return "value";
+            return this.configuration["Frontend:Url"];
         }
 
         [HttpPost]

@@ -2,7 +2,7 @@ cd ..
 
 cd frontend
 call npm install
-call ng build --env=test --output-path ..\backend\outlier.api\wwwroot
+call ng build --env=test
 cd ..
 
 cd backend

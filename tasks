@@ -16,4 +16,4 @@ Common
     - Docker cluster
     - Security (key in app setting, key vault)
     - Authentication (self identity service)
-    - Authorization
+    - Authorization (read-write separation)

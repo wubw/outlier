@@ -1,16 +1,18 @@
 import { Injectable } from '@angular/core';
 import { JwtHelper } from 'angular2-jwt';
 
+import { environment } from '../environments/environment';
+
 declare var bootbox: any;
 declare var Msal: any;
 
 @Injectable()
 export class AuthService {
     private tenantConfig = {
-        tenant: 'azureadb2ctestwubw.onmicrosoft.com',
-        clientID: '29c0ac9e-7745-4262-9dd6-6e621e6f3c8c',
-        signUpSignInPolicy: 'B2C_1_SiUpIn',
-        b2cScopes: ['https://azureadb2ctestwubw.onmicrosoft.com/hello/demo.read']
+        tenant: environment.authTenant,
+        clientID: environment.authClientId,
+        signUpSignInPolicy: environment.authSignUpSignInPolicy,
+        b2cScopes: [environment.authB2cScopeRead]
     };
 
     // Configure the authority for Azure AD B2C

@@ -15,7 +15,8 @@ export abstract class BaseComponent {
     protected retrieveDescription() {
         this.http.get(environment.apiUrl + this.topic + '/description', { headers: this.getHttpHeaders()})
           .toPromise()
-          .then(response => this.description = response.text())
+          .then(response => response.text())
+          .then(data => this.description = JSON.parse(data))
           .catch(err => console.log(err));
     }
 

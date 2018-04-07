@@ -11,18 +11,20 @@
 
     public class Dal
     {
-        private const string EndpointUri = "https://localhost:8081";
-        private const string PrimaryKey = "C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==";
+        private string endpointUri;
+        private string primaryKey;
         private readonly DocumentClient docDbClient;
 
         const string DbName = "Outlier";
         const string CollCategory = "Categories";
         const string CollTag = "Tags";
         const string CollTimeLogs = "TimeLogs";
-
-        public Dal()
+        
+        public Dal(string endpointUri, string primaryKey)
         {
-            this.docDbClient = new DocumentClient(new Uri(EndpointUri), PrimaryKey);
+            this.endpointUri = endpointUri;
+            this.primaryKey = primaryKey;
+            this.docDbClient = new DocumentClient(new Uri(this.endpointUri), this.primaryKey);
             this.Initialize().Wait();
         }
 

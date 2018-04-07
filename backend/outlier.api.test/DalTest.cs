@@ -14,7 +14,9 @@ namespace outlier.api.test
         [ClassInitialize]
         public static void ClassInit(TestContext context)
         {
-            dal = new Dal();
+            dal = new Dal("https://localhost:8081", "C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==");
+            //dal = new Dal("https://outliertime.documents.azure.com:443", "gKuzpRxx6jMAYAB9si6HttVivhBapaNP3eDMPqCxGpjOdiR0wLuBFRchQ5VpmGdBgEG9jkq1Apo0XKR5aoe6eA==");
+
             var category1 = new Category
                                 {
                                     UserId = "wubw",
