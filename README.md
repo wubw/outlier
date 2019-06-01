@@ -56,7 +56,12 @@ pipenv shell
 
 Start backend:
 
-./run.sh
+./backend_run.sh
+
+Start frontend:
+
+cd frontend_main
+ng serve
 
 ## Infrastructure
 
