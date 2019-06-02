@@ -1,0 +1,9 @@
+{
+  "name": "njob4u",
+  "author": "binwei wu",
+  "version": "0.0.1",
+  "license": "MIT",
+  "main": "bundles/njob4u.umd.js",
+  "module": "index.js",
+  "typings": "index.d.ts"
+}

@@ -60,7 +60,7 @@ Start backend:
 
 Start frontend:
 
-cd frontend_main
+cd frontend
 ng serve
 
 ## Infrastructure
@@ -74,3 +74,7 @@ ng serve
 ## Reference Articiles
 
 https://auth0.com/blog/using-python-flask-and-angular-to-build-modern-apps-part-1/
+
+https://itnext.io/building-micro-frontend-applications-with-angular-elements-34483da08bcb
+
+npm link
