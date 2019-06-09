@@ -1,0 +1,27 @@
+<!--The content below is only a placeholder and can be replaced.-->
+<div style="text-align:center">
+  <h1>
+    Welcome to {{ title }}!
+  </h1>
+<ul>
+  <li>
+    {{ test_value }}
+  </li>
+</ul>
+
+<div id="my_pdf_viewer">
+  <div id="canvas_container">
+    <canvas id="pdf_renderer"></canvas>
+  </div>
+  <div id="navigation_controls">
+    <button id="go_previous" (click)="goPrevious($event)">Previous</button>
+    <input id="current_page" value="1" type="number" (keypress)="currentpageKeyPress($event)"/>
+    <button id="go_next" (click)="goNext($event)">Next</button>
+  </div>
+  <div id="zoom_controls">
+    <button id="zoom_in" (click)="zoomIn($event)">+</button>
+    <button id="zoom_out" (click)="zoomOut($event)">-</button>
+  </div>
+</div>
+
+<router-outlet></router-outlet>
